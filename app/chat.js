@@ -1,4 +1,4 @@
-const { 
+const {
     RepeatResponse,
     RandomResponse,
     PatternResponse,
@@ -16,31 +16,29 @@ class Chat {
     }
     
     async getResponse(inputText, dictionary) {
-        // 1 ~ 10
-        const max = 1;
-        const min = 10;
-        const x = Math.floor( Math.random() * (max + 1 - min) ) + min ;
+        // 質問返しのレスポンスクラス
+        this.response = this.repeatResponse;
         
-        /*
-        if (x < 2 ) {
-            this.response = this.repeatResponse;
-        } else if( x < 4 ) {
-            this.response = this.randomResponse;
-        } else if( x < 6 ) {
-            this.response = this.patternResponse;
-        } else if ( x < 11 ) {
-            this.response = this.templateResponse;
-        } else {
-            this.response = this.repeatResponse;
-        }
-        */
+        // ランダムな返信を行うレスポンスクラス
+        this.response = this.randomResponse;
+        
+        // パターンで返信を行うレスポンスクラス
+        this.response = this.patternResponse;
+        
+        // 形態素解析でマッチした返信を行うレスポンスクラス
+        this.response = this.templateResponse;
+        
+        // マルコフ連鎖の文章で返信を行うレスポンスクラス
         this.response = this.marcovResponse;
         
-        const response = await this.response.getResponse(inputText, dictionary);
+        // 返信テキストを取得
+        const responseText = await this.response.getResponse(inputText, dictionary);
         console.log(this.response.getName());
-        console.log(response);
+        console.log(responseText);
         console.log('=====');
-        return response;
+        // 返信テキストを返す
+        return responseText;
     }
 }
+
 module.exports = Chat;
