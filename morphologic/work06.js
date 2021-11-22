@@ -1,7 +1,15 @@
 const  {tokenize} = require('kuromojin');
+const fs = require('fs');
 
-// 形態素解析を行う文章
-const text = '陽菜と美穂がスタバで抹茶ラテを飲んでいます';
+// 読み込むファイル
+const file = './data.txt';
+// ファイルを同期処理で読み込む
+let text = fs.readFileSync(file,{encoding:'utf8', flag:'r'});
+
+// 読み込んだデータを改行で配列に分割する
+const textArray = text.split('\n');
+// 配列を文字列に結合する
+text = textArray.join('');
 
 // 形態素解析で利用する辞書の読み込み
 const dictPath = { dicPath: '../node_modules/kuromoji/dict' };
