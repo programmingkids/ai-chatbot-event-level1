@@ -7,7 +7,5 @@ const text = '今日はとても暑いです';
 const dictPath = { dicPath: '../node_modules/kuromoji/dict' };
 
 // 形態素解析を行う
-tokenize(text, dictPath).then(tokens => {
-    // 形態素解析済みの文章の要素
-    console.log( tokens );
-});
+
+

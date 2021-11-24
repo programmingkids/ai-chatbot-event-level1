@@ -78,9 +78,8 @@ function createMarcovSentence( wordList, marcovDict ) {
         key = tmp;
         count += 1;
     }
-    // 先頭の文章を削除
-    sentence = sentence.replace(/^.+?。/, '');
-    // 最後の文章を削除
-    sentence = sentence.replace(/。[^。]*?$/, '');
-    return sentence;
+    
+    
+    
+    
 }

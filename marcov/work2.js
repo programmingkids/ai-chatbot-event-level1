@@ -23,30 +23,10 @@ tokenize(text, dictPath).then(tokens => {
     const marcovDict = createMarcofDict( wordList );
     
     // マルコフ辞書から文章を作り出す
-    let count = 0;
-    let sentence = '';
-    // 辞書からキーの配列を取り出す
-	const keys = Object.keys(marcovDict);
-	// キーの配列から単語をランダムに取り出す
-    let key = keys[ Math.floor( Math.random() * keys.length ) ];
     
-    while( count < wordList.length ) {
-        let tmp = '';
-        // キーが存在するかチェック
-        if ( key in marcovDict ) {
-            // 辞書から単語の配列を取り出す
-            const words = marcovDict[key];
-            // 単語の配列からランダムな単語を取り出す
-            tmp = words[ Math.floor( Math.random() * words.length ) ];
-            // 取得した単語を文章に追加
-            sentence += tmp;
-        }
-        // 取り出した単語を次のキーに設定
-        key = tmp;
-        count += 1;
-    }
-    // マルコフ連鎖で作成した文章
-    console.log( sentence );
+    
+    
+    
 });
 
 function getSurfaceForm( tokens ) {

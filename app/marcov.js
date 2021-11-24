@@ -45,73 +45,9 @@ class Marcov {
 
     async makeSentence() {
         // マルコフ連鎖による文章の作成
-        // データファイルを読み込む
-        const fileData = this.readFile();
-        // 配列を行コードで連結して文字列にする
-        const text = fileData.join('\n');
-        // 形態素解析を行い、「surface_form」のみの配列取得
-        const wordList = await this.getSurfaceText(text);
         
-	    // マルコフ連鎖用の辞書の作成
-	    const marcovDict = {};
-	    let p1 = '';
-	    let p2 = '';
-	    let p3 = '';
-	    
-	    for ( const word of wordList ) {
-    	    // p1、p2、p3のすべてに値が格納されているか
-    	    if ( p1 && p2 && p3 ) {
-    	        // 辞書のキーを作成
-       		    const key = p1 + '_' + p2 + '_' + p3;
-                // 辞書にキーが存在するか判定
-       		    if ( ! (key in marcovDict) ) {
-       		        // 存在しない場合、新しいキーを作成
-       		        marcovDict[key] = [];
-       		    }
-       		    // 辞書のキーに追加
-       		    marcovDict[key].push(word);
-    	    }
-            // 3つのプレフィックスの値をずらす
-            [p1, p2, p3] = [p2, p3, word];
-	    }
         
-        // マルコフ辞書から文章を作り出す
-        let count = 0;
-        let sentence = '';
-        // 辞書からキーの配列を取得
-    	const keys = Object.keys(marcovDict);
-    	// キーの配列からランダムなキーを取得
-        let key = keys[ Math.floor( Math.random() * keys.length ) ];
-        // キーをアンダースコアで分割
-        [p1, p2, p3] = key.split('_');
         
-        while( count < wordList.length ) {
-            let tmp = '';
-            // キーが存在するかチェック
-            if ( key in marcovDict ) {
-                // 辞書から単語配列を取得
-                const words = marcovDict[key];
-                // 単語配列から1個の単語をランダムに取得
-                tmp = words[ Math.floor( Math.random() * words.length ) ];
-                // 単語を文章に連結
-                sentence += tmp;
-            }
-            // 3つのプレフィックスの値をずらす
-            [p1, p2, p3] = [p2, p3, tmp];
-            // 新しいキーを作成
-            key = p1 + '_' + p2 + '_' + p3;
-            count += 1;
-        }
-        
-        // 不要なカッコを削除
-        sentence = sentence.replace('「', '');
-        sentence = sentence.replace('」', '');
-        // 先頭の文章を削除
-        sentence = sentence.replace(/^.+?。/, '');
-        // 最後の文章を削除
-        sentence = sentence.replace(/。[^。]*?$/, '');
-        // マルコフ連鎖の文章を文字列で返す
-        return sentence;
     }
 }
 

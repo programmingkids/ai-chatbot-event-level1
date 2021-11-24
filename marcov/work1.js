@@ -15,27 +15,5 @@ text = textArray.join('');
 const dictPath = { dicPath: '../node_modules/kuromoji/dict' };
 
 // 形態素解析を行う
-tokenize(text, dictPath).then(tokens => {
-    const wordList = [];
-    // 「surface_form」のみの配列を作成する
-    for( const token of tokens ) {
-        wordList.push( token.surface_form );
-    }
-    
-    // マルコフ連鎖を行うための辞書を作成
-    const marcovDict = {};
-    // 辞書のキーとなる単語
-    for ( let i = 1; i < wordList.length; i++ ) {
-        const key = wordList[i - 1];
-        const word = wordList[i];
-        
-   	    if ( ! (key in marcovDict) ) {
-   	        // 存在しない場合、キーを設定
-   	        marcovDict[key] = [];
-   	    }
-   	    // 辞書に「word」を追加
-   	    marcovDict[key].push(word);
-    }
-    // マルコフ連鎖で利用する辞書完成
-    console.log( marcovDict );
-});
+
+
