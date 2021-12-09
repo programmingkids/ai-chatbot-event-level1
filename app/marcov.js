@@ -113,6 +113,61 @@ class Marcov {
         // マルコフ連鎖の文章を文字列で返す
         return sentence;
     }
+
+    async makeSentence2() {
+        // マルコフ連鎖による文章の作成
+        // データファイルを読み込む
+        const fileData = this.readFile();
+        // 配列を行コードで連結して文字列にする
+        const text = fileData.join('\n');
+        // 形態素解析を行い、「surface_form」のみの配列取得
+        const wordList = await this.getSurfaceText(text);
+
+        // マルコフ連鎖用の辞書の作成
+        const marcovDict = {};
+        // 辞書のキーとなる単語
+        for ( let i = 1; i < wordList.length; i++ ) {
+            const key = wordList[i - 1];
+            const word = wordList[i];
+            if ( ! (key in marcovDict) ) {
+                // 存在しない場合、キーを設定
+                marcovDict[key] = [];
+            }
+            // マルコフ辞書に「word」を追加
+            marcovDict[key].push(word);
+        }
+        // マルコフ辞書から文章を作り出す
+        let count = 0;
+        let sentence = '';
+        // 辞書からキーの配列を取り出す
+        const keys = Object.keys(marcovDict);
+        // キーの配列から単語をランダムに取り出す
+        let key = keys[ Math.floor( Math.random() * keys.length ) ];
+        while( count < wordList.length ) {
+            let tmp = '';
+            // キーが存在するかチェック
+            if ( key in marcovDict ) {
+                // 辞書から単語の配列を取り出す
+                const words = marcovDict[key];
+                // 単語の配列からランダムな単語を取り出す
+                tmp = words[ Math.floor( Math.random() * words.length ) ];
+                // 取得した単語を文章に追加
+                sentence += tmp;
+            }
+            // 取り出した単語を次のキーに設定
+            key = tmp;
+            count += 1;
+        }
+        // 不要なカッコを削除
+        sentence = sentence.replace('「', '');
+        sentence = sentence.replace('」', '');
+        // 先頭の文章を削除
+        sentence = sentence.replace(/^.+?。/, '');
+        // 最後の文章を削除
+        sentence = sentence.replace(/。[^。]*?$/, '');
+        // マルコフ連鎖の文章を文字列で返す
+        return sentence;
+    }
 }
 
 module.exports = Marcov;
